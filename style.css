@@ -2,6 +2,12 @@ body {
 	font-family: Arial;
 }
 
+.container {
+	display: flex;
+	flex-direction: row;
+	align-items: left;
+}
+
 #col1 {
 	flex: 60%;
 }
@@ -9,3 +15,4 @@ body {
 #col2 {
 	flex: 40%;
 }
+
