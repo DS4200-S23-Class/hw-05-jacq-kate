@@ -1,0 +1,11 @@
+body {
+	font-family: Arial;
+}
+
+#col1 {
+	flex: 60%;
+}
+
+#col2 {
+	flex: 40%;
+}
