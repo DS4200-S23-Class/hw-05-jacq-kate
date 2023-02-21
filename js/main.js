@@ -6,6 +6,7 @@ const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right
 
+// frame for scatter 
 const FRAME1 = 
 d3.select("#vis1")
 	.append("svg")
@@ -13,7 +14,7 @@ d3.select("#vis1")
 		.attr("height", FRAME_HEIGHT)
 		.attr("class", "frame");
 
-// reading from a file
+// scatter plot from scatter data
 d3.csv("data/scatter-data.csv").then((data) => {
 
 	// scaling
@@ -32,11 +33,11 @@ d3.csv("data/scatter-data.csv").then((data) => {
 			.data(data)
 			.enter()
 			.append("circle")
+				.attr("class", "point")
 				.attr("cx", (d) => {return X_SCALE(d.x) + MARGINS.left})
 				.attr("cy", (d) => {return  Y_SCALE(d.y) + MARGINS.top})
 				.attr("r", 10)
-				.style("fill", "lightblue")
-				.attr("class", "point");
+				.style("fill", "lightblue");
 
 	// x axis
 	FRAME1.append("g")
@@ -99,26 +100,85 @@ d3.csv("data/scatter-data.csv").then((data) => {
 		let userX = d3.select("#xcoord").node().value;
 		let userY = d3.select("#ycoord").node().value;
 
-		// plot and bind event listeners to point
+		// plot and bind event listeners to point; give x, y data attributes
 		FRAME1.selectAll("points")
 				.data([{x: userX, y: userY}])
 				.enter()
 				.append("circle")
+					.attr("class", "userPoint")
 					.attr("cx", (d) => {return X_SCALE(d.x) + MARGINS.left})
 					.attr("cy", (d) => {return  Y_SCALE(d.y) + MARGINS.top})
 					.attr("r", 10)
 					.style("fill", "lightblue")
-					.attr("class", "userPoint")
-					.attr("value", {x: userX, y: userY})
 					.on("mouseover", handleMouseover)
 					.on("mouseleave", handleMouseleave)
 					.on("click", handleClick);
 	}
 
+	// add on click event handler to submit button
 	d3.select("#subButton")
 			.on("click", addPoint);
 
-	
-
 });
+
+// frame for bar
+const FRAME2 =
+d3.select("#vis2")
+	.append("svg")
+		.attr("width", FRAME_WIDTH)
+		.attr("height", FRAME_HEIGHT)
+		.attr("class", "frame");
+
+// bar plot from bar data
+d3.csv("data/bar-data.csv").then((data) => {
+	console.log(data)
+	const MAX_Y = d3.max(data, (d) => {return parseInt(d.amount)});
+	const Y_SCALE = d3.scaleLinear()
+						.domain([0, MAX_Y + 1])
+						.range([VIS_HEIGHT, 0]);
+
+	const MAX_X = d3.max(data, (d, i) => {return parseInt(i)});
+	const X_SCALE = d3.scaleLinear()
+						.domain([0, MAX_X + 1])
+						.range([0, VIS_WIDTH]);
+
+	// plot
+	FRAME2.selectAll("bars")
+			.data(data)
+			.enter()
+			.append("rect")
+				.attr("class", "bar")
+				.attr("x", (d, i) => {return X_SCALE(i) + MARGINS.left})
+				.attr("y", (d) => {return FRAME_HEIGHT - Y_SCALE(d.amount) - MARGINS.top})
+				.attr("width", 30)
+				.attr("height", (d) => {return Y_SCALE(d.amount) + MARGINS.top})
+				.style("fill", "blue");
+
+	// x axis
+	FRAME2.append("g")
+			.attr("transform", 
+					"translate(" + MARGINS.left + "," + (FRAME_HEIGHT - MARGINS.top) + ")")
+				.call(d3.axisBottom(X_SCALE).ticks(6))
+					.attr("font-size", "15px"); 
+
+	// y axis
+	FRAME2.append("g")
+			.attr("transform", 
+					"translate(" + MARGINS.left + "," + MARGINS.top + ")")
+				.call(d3.axisLeft(Y_SCALE).ticks(10))
+					.attr("font-size", "15px");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
