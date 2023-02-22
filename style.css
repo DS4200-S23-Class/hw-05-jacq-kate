@@ -12,6 +12,16 @@ body {
 	align-items: left;
 }
 
+.tooltip {
+	position: absolute;
+	background-color: lightpink;
+	border: solid;
+	border-width: 2px;
+	border-radius: 5px;
+	padding: 5px;
+	color: indianred;
+}
+
 #col1 {
 	flex: 60%;
 }
