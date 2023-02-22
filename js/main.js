@@ -1,10 +1,7 @@
 // declare constants
 const FRAME_HEIGHT = 500;
-<<<<<<< Updated upstream
 const FRAME_WIDTH = 400;
-=======
-const FRAME_WIDTH = 500;
->>>>>>> Stashed changes
+
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom
@@ -57,19 +54,19 @@ d3.csv("data/scatter-data.csv").then((data) => {
 				.call(d3.axisLeft(Y_SCALE).ticks(10))
 					.attr("font-size", "15px");
 
-	// mouseover
+	// higlight on mouseover 
 	function handleMouseover(event, d) {
 		d3.select(this).style("fill", "slateblue");
 	}
 
-	// mouseleave
+	// un-highlight on mouseleace
 	function handleMouseleave(event, d) {
 		d3.select(this).style("fill", "lightblue");
 	}
 
 	let coords = [];
 
-	// click
+	// click for border
 	function handleClick(event, d) {
 		coord = "(" + d.x + "," + d.y + ")";
 
@@ -99,6 +96,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 			.on("mouseleave", handleMouseleave)
 			.on("click", handleClick);
 
+	// add user point to graph
 	function addPoint() {
 		// get user values
 		let userX = d3.select("#xcoord").node().value;
@@ -106,6 +104,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 
 		// plot and bind event listeners to point; give x, y data attributes
 		FRAME1.selectAll("points")
+				// taking in user x and y 
 				.data([{x: userX, y: userY}])
 				.enter()
 				.append("circle")
@@ -145,11 +144,13 @@ d3.csv("data/bar-data.csv").then((data) => {
 						.domain([0, MAX_X + 1])
 						.range([0, VIS_WIDTH]);
 
+	// creating a new scale for x-axis ticks
+	// map categories positions
 	const TICK_SCALE = d3.scaleBand(data.map((d) => d.category), 
 									[0, FRAME_WIDTH - MARGINS.right])
 							.paddingInner(0.01);
 
-	// plot
+	// bar chart
 	FRAME2.selectAll("bars")
 			.data(data)
 			.enter()
@@ -181,20 +182,20 @@ d3.csv("data/bar-data.csv").then((data) => {
 							.attr("class", "tooltip")
 							.style("opacity", 0);
 
-	// mouseover
+	// highlight and show tool tip for bar chart
 	function handleMouseover(event, d) {
 		d3.select(this).style("fill", "slateblue");
 		TOOLTIP.style("opacity", 1);
 	}
 
-	// mousemove
+	// move tooltip with mouse
 	function handleMousemove(event, d) {
 		TOOLTIP.html("Category: " + d.category + "<br>Amount: " + d.amount)
 				.style("left", (event.pageX + 10) + "px")
 				.style("top", (event.pageY - 50) + "px");
 	}
 
-	// mouseleave
+	// get rid of tool tip and highlight
 	function handleMouseleave(event, d) {
 		d3.select(this).style("fill", "lightblue");
 		TOOLTIP.style("opacity", 0);
