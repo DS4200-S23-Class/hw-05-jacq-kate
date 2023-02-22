@@ -1,6 +1,10 @@
 // declare constants
 const FRAME_HEIGHT = 500;
+<<<<<<< Updated upstream
 const FRAME_WIDTH = 400;
+=======
+const FRAME_WIDTH = 500;
+>>>>>>> Stashed changes
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom
@@ -156,6 +160,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 				.attr("width", 40)
 				.attr("height", (d) => {return VIS_HEIGHT - Y_SCALE(d.amount)})
 				.style("fill", "lightblue");
+
 
 	// x axis
 	FRAME2.append("g")
